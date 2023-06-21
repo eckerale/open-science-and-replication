@@ -27,6 +27,7 @@ cd "$WDIR"
 **# 1. load data
 use Latinobarometro_2020_Eng_Stata_v1_0.dta, clear
 
+
 **# 2. hardcoding and copy & paste
 tab1 p30st_?
 tab1 p30st_?, nolab
@@ -65,7 +66,8 @@ replace p30st_e = p30st_e * -1 + 5
 mvdecode p30st_e, mv(6 = .a \ 10 = .b)
 label values p30st_e favo
 rename p30st_e opinion_cub
-	
+
+
 **# 3. loop with macro
 * reload data set
 use Latinobarometro_2020_Eng_Stata_v1_0.dta, clear
@@ -88,6 +90,7 @@ foreach suffix in a b c d e {													// loop over local macro suffix with e
 
 tab1 opinion_*, m
 
+
 **# 4. standardize variables, i.e. mean of 0 and standard deviation of 1
 sum opinion_us
 gen opinion_us_std = (opinion_us - 2.806528)/.8849583
@@ -104,3 +107,19 @@ foreach var of varlist opinion_* {
 	gen `var'_std = (`var' - `r(mean)')/`r(sd)'
 }
 sum opinion_*_std
+
+
+**# 5. program your own command (i.e. a program in Stata jargon)
+capture program drop stdvar														// delete own command if defined previously
+program define stdvar															// define new command stdvar
+	syntax varname																// define command syntax
+	
+	qui summarize `1'															// define what the new command does
+	gen `1'_std = (`1' - `r(mean)')/`r(sd)'
+	
+end
+
+drop opinion_*_std
+foreach var of varlist opinion_* {
+	stdvar `var'
+}

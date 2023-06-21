@@ -1,0 +1,180 @@
+% !TeX program = lualatex
+\documentclass[10pt, aspectratio=169]{beamer}
+\usepackage{pgfpages}
+\usepackage{fontawesome}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{graphics}
+\usepackage[T1]{fontenc}
+\graphicspath{{C:/Users/Ecker/Seafile/teaching/resources}}
+
+% Bibliography
+\usepackage[authordate, natbib, useprefix=true, isbn=false,url=false, doi=false, backend=biber]{biblatex-chicago}  
+\bibliography{res/literature.bib}
+\setbeamertemplate{bibliography item}[text]
+
+% Size of bibliography entries
+\renewcommand*{\bibfont}{\footnotesize}
+
+% new citep command
+\newcommand{\cpsh}[1]{\unskip \textsuperscript{\textcolor{mzescyan}{[\citealp{#1}]}}}
+\newcommand{\cpsl}[1]{\unskip \textsubscript{\textcolor{mzescyan}{[\citealp{#1}]}}}
+
+% Layout
+\mode<presentation>
+{
+	\usetheme[progressbar=frametitle, titleformat=allcaps]{metropolis}
+	\useoutertheme[]{metropolis}
+	\useinnertheme[]{circles}
+	
+	%remove navigation symbols
+	\setbeamertemplate{navigation symbols}{}
+	
+	% define colors
+	\definecolor{hdred}{RGB}{198,24,38}
+	\definecolor{hddarkred}{RGB}{89,13,8}
+	\definecolor{hdbg}{RGB}{244,241,243}
+	
+	% Blocks
+	\setbeamercolor{block body}{bg=hdred!10, fg=black}
+	\setbeamercolor{block body alerted}{bg=normal text.bg!90!black}
+	\setbeamercolor{block body example}{bg=normal text.bg!90!black}
+	\setbeamercolor{block title alerted}{use={normal text,alerted text},fg=hddarkred,bg=black}
+	\setbeamercolor{block title}{bg=hdred, fg = hdbg}
+	\setbeamercolor{block title example}{use={normal text},fg=example text.fg!75!normal text.fg,bg=normal text.bg!75!black}
+	
+	% Frames
+	\setbeamercolor{fine separation line}{fg=hddarkred}
+	\setbeamercolor{item projected}{fg=hdbg}
+	
+	% Miniframes
+	\setbeamercolor{section in head/foot}{fg=hdred,bg=hdbg}
+	
+	% Title
+	\setbeamercolor{background}{bg=hdbg}
+	\setbeamercolor{background canvas}{bg=hdbg}
+	\setbeamercolor{title}{fg=hdred, bg = hdred!5}
+	\setbeamercolor{titlelike}{fg=hdred}
+	\setbeamercolor{subsection in head/foot}{bg=hddarkred!10, fg = hdred}
+	\setbeamercolor{author in head/foot}{bg=hdred!75, fg = hdbg}
+	\setbeamercolor{title in head/foot}{bg=hdred!75, fg = hdbg}
+	\setbeamercolor{date in head/foot}{bg=hdbg, fg = hdred}
+	\setbeamercolor{page in head/foot}{bg=hdbg, fg = hddarkred}
+	\setbeamercolor{frametitle}{fg=hdred, bg = hdbg}
+	\setbeamercolor{item}{fg=hdred}
+	\setbeamercolor{normal text}{bg=hdbg,fg=black}
+	\setbeamercolor{alerted text}{bg=hdbg,fg=hddarkred}
+	\setbeamercovered{invisible}
+}
+
+% Font
+\setbeamerfont{frametitle, frametitle continuation}{size=\large}
+\setbeamerfont{titlelike}{size=\large}
+\setbeamerfont{footline}{size=\scriptsize}
+\setbeamertemplate{itemize item}[triangle]
+\setbeamerfont{block body}{size=\footnotesize}
+
+% Logo
+\logo{\includegraphics[width=20em]{HCIAS.png}\hspace{11cm}
+\includegraphics[width=12em]{hd_logo_small_sw_16cm_rgb.png}}
+\newcommand{\nologo}{\setbeamertemplate{logo}{}}
+% customize foot line
+\makeatother
+\setbeamertemplate{footline}
+{
+	\leavevmode%
+	\hbox{%
+		\begin{beamercolorbox}[wd=.25\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+			\usebeamerfont{author in head/foot}\insertshortauthor
+		\end{beamercolorbox}%
+		\begin{beamercolorbox}[wd=.6\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+			\usebeamerfont{title in head/foot}\insertshorttitle
+		\end{beamercolorbox}%
+		\begin{beamercolorbox}[wd=.15\paperwidth,ht=2.25ex,dp=1ex,center]{page in head/foot}%
+			\insertframenumber{} \hspace*{1ex}
+	\end{beamercolorbox}}%
+	\vskip0pt%
+}
+\makeatletter
+
+\setbeamertemplate{navigation symbols}{}
+\providecommand*\email[1]{\href{mailto:#1}{#1}}
+
+
+
+% title slide
+\title[Replication and Open Science $\mid$ 9 Version control] % (optional, use only with long paper titles)
+{\large \textbf{Replication and Open Science}}
+\subtitle{Session 9 $\mid$ Version control and reproducible code}
+
+\author[Alejandro Ecker (HCIAS)]{
+	Alejandro Ecker\\
+	\scriptsize Faculty of Economics and Social Sciences \\ \scriptsize Heidelberg Center for Ibero-American Studies \vspace{1.25em} \\
+	\hspace*{1em} \scriptsize \faEnvelope \hspace{.5em} \texttt{\email{alejandro.ecker@uni-heidelberg.de}}
+}
+\date{}
+\institute{Heidelberg University $\mid$ Summer term 2023 \\ June 26, 2023}
+\subject{}
+
+% Beginn document ######################################################
+% ######################################################################
+% ######################################################################
+% ######################################################################
+\begin{document}
+
+
+% Page 1
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\section{Version control}
+
+\begin{frame}[t]{Motivation}
+“The \alert{future me} could use these lines of code sometime...”\vspace{3mm}
+
+\centering
+\includegraphics[width=.6\textwidth]{reserve_code}
+\end{frame}
+
+\begin{frame}[t]{Version control software}
+\begin{itemize}
+	\item tracking indefinitely all changes in code/text files
+	\item selectively reverting changes
+	\item experimenting by branching from master files
+	\item facilitates collaboration by sharing/vetting/reconciling changes
+\end{itemize}
+\end{frame}
+
+\begin{frame}[t]{Using Git and GitHub}
+\centering
+\includegraphics[width=.8\textwidth]{github}
+\end{frame}
+
+\section{Streamline code}
+
+\begin{frame}[t]{Motivation}
+“I choose a \alert{lazy person} to do a \alert{hard job}. Because a lazy person will find an easy way to do it.”\vspace{3mm}
+
+\centering
+\includegraphics[width=.3\textwidth]{lazy person}
+\end{frame}
+
+\begin{frame}[t]{How to streamline code}
+	\vspace{1mm}
+	\begin{itemize}
+		\item \alert{minimize repetition throughout:} 
+		\begin{enumerate}
+		\item avoid hardcoding and use macros/variables instead\vspace{1mm}
+		\item avoid copy/pasting code and use own functions instead\vspace{1mm}
+		\item build your own library of functions if you keep pasting code back and forth (it's much easier than you think)\vspace{3mm}
+		\end{enumerate} 
+		\item \alert{use working directories and relative paths efficiently:} 
+		\begin{enumerate}
+		\item you or someone replicating your study only has to adapt the path once (if files move AND they will move)\vspace{1mm}
+		\item particularly useful if co-authors/replicators alternate between Mac (``/") and Windows (``$\backslash$")
+		\end{enumerate} 
+	\end{itemize}
+\end{frame}
+
+\end{document}

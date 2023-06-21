@@ -14,7 +14,7 @@ df <- read_csv("latinobarometro_2020.csv")
 table(df$p30st_a)
 
 df <- df %>% 
-  # recode variable so that higher values indicate more favorable opinions
+  # re-code variable so that higher values indicate more favorable opinions
   mutate(p30st_a = p30st_a * -1 + 5) %>%
   # change numeric values to missing values
   mutate(p30st_a = na_if(p30st_a, 6),
@@ -79,3 +79,18 @@ df <- df %>%
   mutate(across(starts_with("p30st_"),
                 ~ (.x - mean(.x, na.rm = TRUE))/sd(.x, na.rm = TRUE),
          .names = "{.col}_std"))
+
+
+# 5. program your own functions ----
+stdvar <- function(var) {
+  (var - mean(var, na.rm = TRUE))/(sd(var, na.rm = TRUE))
+}
+
+df <- read_csv("latinobarometro_2020.csv")
+df <- df %>%
+  mutate(p30st_a = p30st_a * -1 + 5) %>%
+  mutate(p30st_a = na_if(p30st_a, 6),
+         p30st_a = na_if(p30st_a, 10)) %>%
+  mutate(across(starts_with("p30st_"),
+                ~ stdvar(.x),
+                .names = "{.col}_std"))
