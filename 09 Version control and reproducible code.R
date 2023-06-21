@@ -1,9 +1,4 @@
-#####################################################################
-###                                                               ###
 ### OSC: Session 09 Version control and writing reproducible code ###
-###  						                                                  ###
-#####################################################################
-
 
 # 0. load packages and define working directory ----
 rm(list = ls())
@@ -73,7 +68,14 @@ df <- read_csv("latinobarometro_2020.csv")
 df <- df %>%
   mutate(p30st_a = p30st_a * -1 + 5) %>%
   mutate(p30st_a = na_if(p30st_a, 6),
-         p30st_a = na_if(p30st_a, 10)) %>%
+         p30st_a = na_if(p30st_a, 10))
+df %>% summarise(mean(p30st_a, na.rm = TRUE),
+                 sd(p30st_a, na.rm = TRUE))
+df <- df %>%
+  mutate(p30st_a_std = (p30st_a - 2.81)/0.885)
+  # ...
+
+df <- df %>%
   mutate(across(starts_with("p30st_"),
                 ~ (.x - mean(.x, na.rm = TRUE))/sd(.x, na.rm = TRUE),
          .names = "{.col}_std"))
